@@ -21,10 +21,14 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
         this.minSize = minSize;
         this.startSize = startSize;
 
-        prvky = new ArrayList<LinearniSeznam<Prvek>>(this.startSize);  // vytvoreni prazdne mapy se startovni velikosti
+        for (int i = 0; i < startSize; i++) {     // vytvoreni prazdne mapy se startovni velikosti
+            prvky.add(new LinearniSeznam<>());
+        }
     }
     public HashMapa() {                               // konstruktor bez parametru 
-        prvky = new ArrayList<LinearniSeznam<Prvek>>(this.startSize);  // vytvoreni prazdne mapy se startovni velikosti
+        for (int i = 0; i < startSize; i++) {     // vytvoreni prazdne mapy se startovni velikosti
+            prvky.add(new LinearniSeznam<>());
+        }
     }
     public int GetPocetPrvku() {
         return pocetPrvku;
