@@ -35,7 +35,7 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
     }
 
     public void Vlozit(V data, K key) {                               // vlozeni dalsiho prvku s klicem     O(1) 
-        int index = key.hashCode() % prvky.size();             
+        int index = Math.abs(key.hashCode() % prvky.size());           
 
         if (prvky.get(index) == null) {
             prvky.set(index, new LinearniSeznam<Prvek>());
@@ -49,7 +49,7 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
     }
     
     public V Najit(K key) {                                          // vrati data prvku ktery ma stejny klic jako zadany pokud je takovy v mape   O(1) ... O(n)
-        int index = key.hashCode() % prvky.size();                   // pokud nenajde vrati null
+        int index = Math.abs(key.hashCode() % prvky.size());                   // pokud nenajde vrati null
 
         if (prvky.get(index) != null) {
             List<Prvek> listPrvky = prvky.get(index).ToList();
@@ -62,7 +62,7 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
         return null;
     }
     public void Smazat(K key) {                                    // smazani prvku podle klice         O(1) ... O(n)
-        int index = key.hashCode() % prvky.size();
+        int index = Math.abs(key.hashCode() % prvky.size());
 
         if (prvky.get(index) != null) {
             List<Prvek> listPrvky = prvky.get(index).ToList();
@@ -91,7 +91,7 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
         for (LinearniSeznam<Prvek> seznam : prvkyPuvodni) {
             while (seznam.GetAtIndex(0) != null) {
                 Prvek prvek = seznam.GetAtIndex(0);
-                int index = prvek.key.hashCode() % zvetsenePrvky.size();
+                int index = Math.abs(prvek.key.hashCode() % zvetsenePrvky.size());
                 zvetsenePrvky.get(index).vlozPosledni(prvek);
                 seznam.VymazatPrvni();
             }
