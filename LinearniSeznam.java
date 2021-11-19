@@ -6,6 +6,10 @@ public class LinearniSeznam<E> {
     private int pocetPrvku;
     private PrvekSeznamu prvni, posledni, aktualni;
 
+    /**
+    vrátí počet prvků O(1)
+    @return  vrátí počet prvků
+    */
     public int getPocetPrvku() {
         return pocetPrvku;
     }
@@ -13,65 +17,111 @@ public class LinearniSeznam<E> {
         PrvekSeznamu predchozi, nasledujici;
         E data;
     }
+    /**
+    vypíše první, poslední a aktuální prvek a počet prvků O(1)
+    */
     public void Debug() {
         System.out.printf("\n Prvni: " + prvni.data + ", Posledni: " + posledni.data);
         System.out.printf(", Aktualni: " + aktualni.data + ", Pocet Prvku: " + pocetPrvku + "\n");
     }
-    
-    public void vlozPrvni(E data) {             // O(1)
+    /**
+    Vloží do seznamu nový prvek s danými daty jako první. Nastaví tento nový prvek jako aktuální O(1)
+    */
+    public void vlozPrvni(E data) {             
         VlozPrvek(data, null, prvni);
     }
-    public void vlozPosledni(E data) {          // O(1)
+    /**
+    Vloží do seznamu nový prvek s danými daty jako poslední. Nastaví tento nový prvek jako aktuální O(1)
+    */
+    public void vlozPosledni(E data) {          
         VlozPrvek(data, posledni, null);
     }
-    public void vlozNasledujici(E data) {       // O(1)
+    /**
+    Vloží do seznamu nový prvek s danými daty za aktuální. Nastaví tento nový prvek jako aktuální O(1)
+    */
+    public void vlozNasledujici(E data) {       
         VlozPrvek(data, aktualni, aktualni.nasledujici);
     }
-    public void vlozPredchozi(E data) {         // O(1)
+    /**
+    Vloží do seznamu nový prvek s danými daty před katuální  O(1)
+    */
+    public void vlozPredchozi(E data) {         
         VlozPrvek(data, aktualni.predchozi, aktualni);
     }
-   
-    public E VymazatPosledni() {                  // O(1)
+    /**
+    Vymaže poslední prvek. Pokud je daný prvek aktuální aktuálním prvkem se stane následující, pokud je null tak předchozí  O(1)
+    @return  vrátí data vymazaného prvku
+    */
+    public E VymazatPosledni() {                  
         return VymazatCheck(posledni);
     }
-    public E VymazatPrvni() {                     // O(1)
+    /**
+    Vymaže první prvek. Pokud je daný prvek aktuální aktuálním prvkem se stane následující, pokud je null tak předchozí  O(1)
+    @return  vrátí data vymazaného prvku
+    */
+    public E VymazatPrvni() {                    
         return VymazatCheck(prvni);
     }
-    public E VymazatAktualni() {                  // O(1)
+    /**
+    Vymaže aktuální prvek. aktuálním prvkem se stane následující, pokud je null tak předchozí  O(1)
+    @return  vrátí data vymazaného prvku
+    */
+    public E VymazatAktualni() {                  
         return VymazatCheck(aktualni);
     }
-    public void VymazatPrvekData(E data) {      // O(n)
+    /**
+    Vymaže prvek s danými daty. Pokud je daný prvek aktuální aktuálním prvkem se stane následující, pokud je null tak předchozí  O(n)
+    */
+    public void VymazatPrvekData(E data) {      
         VymazatPrvek(NajitPrvek(data));
     }
-
-    public E GetAtIndex(int index) {            // O(n)
+    /**
+    vrátí data prvku na daném indexu v seznamu  O(n)
+    @return  vrátí data na daném prvku nebo null pokud tento index neexistuje
+    */
+    public E GetAtIndex(int index) {            
         PrvekSeznamu prvek = PrvekAtIndex(index);
         if (prvek != null)
             return prvek.data;
         return null;
     }
-    public void SetAtIndex(int index, E data) {      // O(n)
+    /**
+    Nastaví prvek na daném indexu na danou hodnotu v seznamu  O(n)
+    */
+    public void SetAtIndex(int index, E data) {      
         PrvekSeznamu prvek = PrvekAtIndex(index);
         if (prvek != null)
             VlozPrvek(data, prvek.predchozi, prvek.nasledujici);
     }
-    public void RemoveAtIndex(int index) {           // O(n)
+    /**
+    Smaže prvek na daném indexu v seznamu. Pokud je daný prvek aktuální aktuálním prvkem se stane následující, pokud je null tak předchozí  O(n)
+    */
+    public void RemoveAtIndex(int index) {         
         PrvekSeznamu prvek = PrvekAtIndex(index);
         VymazatPrvek(prvek);
     }
-
-    public void Clear() {                            // O(1)
+    /**
+    nastaví prvni, posledni a aktualni prvek na null a pocet prvků na 0  O(1)
+    */
+    public void Clear() {                            
         prvni = posledni = aktualni = null;
         pocetPrvku = 0;
     }
-    public void VypsatSeznam() {                     // O(n)
+    /**
+    Vypíše data všech prvků
+    */
+    public void VypsatSeznam() {                     
         PrvekSeznamu prvek = prvni;
         while (prvek != null) {
             System.out.printf(prvek.data + ", ");
             prvek = prvek.nasledujici;
         }
     }
-    public List<E> ToList() {                              // O(n)
+    /**
+    vrátí list se všemi daty ze všech prvků které jsou v seznamu  O(n)
+    @return  vrátí list se všemi daty, pokud v seznamu není nic uložené vrátí prázdný list
+    */
+    public List<E> ToList() {                              
         List<E> list = new ArrayList<>();
         PrvekSeznamu prvek = prvni;
         while (prvek != null) {
@@ -80,15 +130,53 @@ public class LinearniSeznam<E> {
         }
         return list;
     }
-
-    private E VymazatCheck(PrvekSeznamu prvek) {          // O(1)
+    /**
+    vrátí list se všemi daty ze všech prvků pozpádku které jsou v seznamu  O(n)
+    @return vrátí list se všemi daty pozpádku, pokud v seznamu není nic uložené vrátí prázdný list
+    */
+    public List<E> ToListReversed() {                              
+        List<E> list = new ArrayList<>();
+        PrvekSeznamu prvek = posledni;
+        while (prvek != null) {
+            list.add(prvek.data);
+            prvek = prvek.predchozi;
+        }
+        return list;
+    }
+    /**
+    vrátí data posledního prvku O(1)
+    @return vrátí data posledního prvku nebo null pokud je poslední null
+    */
+    public E GetPosledni() {
+        if (posledni == null)   
+            return null;
+        else
+            return posledni.data;
+    }
+    /**
+    vrátí data aktuálního prvku O(1)
+    @return vrátí data aktuálního prvku nebo null pokud je aktuální null
+    */
+    public E GetAktualni() {
+        if (aktualni == null)   
+            return null;
+        else
+            return aktualni.data;
+    }
+    /**
+    Vymaže prvek ze seznamu O(1)
+    @return vrátí data smazaného prvku nebo null pokud byl prvek null
+    */
+    private E VymazatCheck(PrvekSeznamu prvek) {          
         VymazatPrvek(prvek);
         if (prvek != null)
             return prvek.data;
         return null;
     }
-
-    private void VlozPrvek(E data, PrvekSeznamu predchozi, PrvekSeznamu nasledujici) {   // O(1)
+    /**
+    Vytvoří nový prvek mezi dvěma danými prvky. Mohou být null pokud bude vkládaný prvek první nebo poslední. Nastaví tento nový prvek jako aktuální  O(1)
+    */
+    private void VlozPrvek(E data, PrvekSeznamu predchozi, PrvekSeznamu nasledujici) {   
         PrvekSeznamu novy = new PrvekSeznamu();
         novy.data = data;
 
@@ -114,7 +202,10 @@ public class LinearniSeznam<E> {
         pocetPrvku++;
         aktualni = novy;
     }
-    private void VymazatPrvek(PrvekSeznamu prvek) {  // O(1)
+    /**
+    Vymaže daný prvek ze seznamu. Pokud je daný prvek aktuální aktuálním prvek se stane následující, pokud je null tak předchozí O(1)
+    */
+    private void VymazatPrvek(PrvekSeznamu prvek) {  
         if (prvek != null) {
             if (prvek.nasledujici != null) {
                 aktualni = prvek.nasledujici;
@@ -141,7 +232,11 @@ public class LinearniSeznam<E> {
                 pocetPrvku--;
         }   
     }
-    private PrvekSeznamu PrvekAtIndex(int index) {   // O(n)
+    /**
+    Najde a vrátí prvek na indexu z argumentu  O(n)
+    @return vrtání prvek nebo null pokud takový index neexistuje
+    */
+    private PrvekSeznamu PrvekAtIndex(int index) {   
         if (index < 0 || index >= pocetPrvku)
             return null;
 
@@ -158,7 +253,11 @@ public class LinearniSeznam<E> {
         }
         return null;
     }
-    private PrvekSeznamu NajitPrvek(E data) {   // O(n)
+    /**
+    Najde a vrátí prvek se stejnými daty jako v agumentu  O(n)
+    @return vrátí prvek nebo null pokud prvek s těmito daty neexistuje  
+    */
+    private PrvekSeznamu NajitPrvek(E data) {
         PrvekSeznamu prvek = prvni; 
         while (prvek != null) {
             if (prvek.data == data)

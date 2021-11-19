@@ -13,19 +13,21 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
     private int minSize = 5;                   // pokud by se pri zmenseni mela mapa zmensit pod tuto velikost tak se nezmensi
     
 
-    public HashMapa(float maxLoadFactor, float minLoadFactor, float scaleUp, float scaleDown, int startSize, int minSize) {   // kontruktor s parametry
+    public HashMapa(float maxLoadFactor, float minLoadFactor, float scaleUp, int startSize) {   // kontruktor s parametry
         this.maxLoadFactor = maxLoadFactor;
         this.minLoadFactor = minLoadFactor;
         this.scaleUp = scaleUp;
-        this.scaleDown = scaleDown;
-        this.minSize = minSize;
+        this.scaleDown = 1 / scaleUp;
+        this.minSize = startSize;
         this.startSize = startSize;
 
-        for (int i = 0; i < startSize; i++) {     // vytvoreni prazdne mapy se startovni velikosti
+        prvky = new ArrayList<>(this.startSize);
+        for (int i = 0; i < this.startSize; i++) {     // vytvoreni prazdne mapy se startovni velikosti
             prvky.add(new LinearniSeznam<>());
         }
     }
     public HashMapa() {                               // konstruktor bez parametru 
+        prvky = new ArrayList<>(startSize);
         for (int i = 0; i < startSize; i++) {     // vytvoreni prazdne mapy se startovni velikosti
             prvky.add(new LinearniSeznam<>());
         }
@@ -83,8 +85,9 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
     } 
     public List<LinearniSeznam<Prvek>> NastaveniVelikostiMapy(List<LinearniSeznam<Prvek>> prvkyPuvodni, float scale) {       // zmeneni velikosti mapy      O(n)
         int length = prvkyPuvodni.size();
-        List<LinearniSeznam<Prvek>> zvetsenePrvky = new ArrayList<>();
-        for (int i = 0; i < length * scale; i++) {
+        int Newlength = Math.round(length * scale);
+        List<LinearniSeznam<Prvek>> zvetsenePrvky = new ArrayList<>(Newlength);
+        for (int i = 0; i < Newlength; i++) {
             zvetsenePrvky.add(new LinearniSeznam<Prvek>());
         }
         
