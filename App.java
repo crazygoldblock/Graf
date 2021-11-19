@@ -8,9 +8,10 @@ public class App {
         graf.VLozitPrvek("david");
         graf.VLozitPrvek("vojta");
         graf.VLozitPrvek("ondra");
+        graf.SmazatPrvek("michal");
 
-        graf.PridatPropojeni("michal", "david");
-        graf.PridatPropojeni("michal", "vojta");
+        //graf.PridatPropojeni("michal", "david");
+        //graf.PridatPropojeni("michal", "vojta");
         graf.PridatPropojeni("ondra", "david");
         graf.PridatPropojeni("david", "vojta");
 

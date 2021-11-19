@@ -12,10 +12,6 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
     private int startSize = 10;                 // velikost mapy pri vytvoreni
     private int minSize = 10;                   // pokud by se pri zmenseni mela mapa zmensit pod tuto velikost tak se nezmensi
     
-
-    /**
-    vrátí počet prvků v mapě O(1)
-    */
     public HashMapa(float maxLoadFactor, float minLoadFactor, float scaleUp, int startSize) {   // kontruktor s parametry
         this.maxLoadFactor = maxLoadFactor;
         this.minLoadFactor = minLoadFactor;
@@ -43,14 +39,11 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
         return pocetPrvku;
     }
     /**
-    Vytvoří z daných dat nový prvek a vloží ho do mapy na pozici podle daného klíče O(1)
+    Vytvoří z daných dat nový prvek a vloží ho do mapy na pozici podle daného klíče O(1) ... O(n)
     */
     public void Vlozit(V data, K key) {                                 
         int index = Math.abs(key.hashCode() % prvky.size());           
 
-        if (prvky.get(index) == null) {
-            prvky.set(index, new LinearniSeznam<Prvek>());
-        }
         prvky.get(index).vlozPosledni(new Prvek(data, key));
         pocetPrvku++;
 
@@ -65,38 +58,33 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
     public V Najit(K key) {                                             
         int index = Math.abs(key.hashCode() % prvky.size());                   
 
-        if (prvky.get(index) != null) {
-            List<Prvek> listPrvky = prvky.get(index).ToList();
+        List<Prvek> listPrvky = prvky.get(index).ToList();
 
-            for (Prvek prvek : listPrvky) {
-                if (prvek.key.equals(key))   
-                    return prvek.data;
-            }
+        for (Prvek prvek : listPrvky) {
+            if (prvek.key.equals(key))   
+                return prvek.data;
         }
         return null;
     }
     /**
     Smaže z mapy první prvek který má daný klíč. Změnší mapy pokud po smazání je load factor pod danou hodnotou O(1) ... O(n)
     */
-    public void Smazat(K key) {                                          
+    public boolean Smazat(K key) {                                          
         int index = Math.abs(key.hashCode() % prvky.size());
 
-        if (prvky.get(index) != null) {
-            List<Prvek> listPrvky = prvky.get(index).ToList();
+        List<Prvek> listPrvky = prvky.get(index).ToList();
 
-            if (listPrvky.size() > 0) {
-                for (int i = 0; i < listPrvky.size(); i++) {
-                    if (listPrvky.get(i).key.equals(key)) {
-                        prvky.get(index).RemoveAtIndex(i);
-                        pocetPrvku--;
-                        if (pocetPrvku / prvky.size() <= minLoadFactor && prvky.size() * scaleDown >= minSize) {          // zmenseni mapy pokud je potreba
-                            prvky = NastaveniVelikostiMapy(prvky, scaleDown);
-                        }
-                        return;
-                    }
+        for (int i = 0; i < listPrvky.size(); i++) {
+            if (listPrvky.get(i).key.equals(key)) {
+                prvky.get(index).RemoveAtIndex(i);
+                pocetPrvku--;
+                if (pocetPrvku / prvky.size() <= minLoadFactor && prvky.size() * scaleDown >= minSize) {          // zmenseni mapy pokud je potreba
+                    prvky = NastaveniVelikostiMapy(prvky, scaleDown);
                 }
+                return true;
             }
         }
+        return false;
     } 
     /**
     vrátí zvětšenou mapu s velikostí podle daného faktoru O(n)
@@ -124,7 +112,7 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
     Vypíše hodnoty všech prvků. Vypíše prázdný řádek pokud v daném seznamu není žádný prvek O(n)
     */
     public void Vypsat() {                                      
-        for (LinearniSeznam<Prvek> seznam : prvky) {            // 
+        for (LinearniSeznam<Prvek> seznam : prvky) {            
             if (seznam != null) {
                 System.out.printf("\n");
                 List<Prvek> list = seznam.ToList();
