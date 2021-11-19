@@ -19,6 +19,5 @@ public class App {
         for (String osoba : osoby) {
             System.out.printf(osoba + ", ");
         }
-        
     }
 }

@@ -6,13 +6,16 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
     private int pocetPrvku = 0;
                                                 
     private float maxLoadFactor = 1;           // pokud je load factor vetsi mapa se zvetsi                  load factor -> velikostMapy / pocetPrvku 
-    private float minLoadFactor = 0.5f;        // pokud je mensi mapa se zmensi
+    private float minLoadFactor = 0.2f;        // pokud je mensi mapa se zmensi
     private float scaleUp = 2;                 // pokud se zvetsuje mapa zvetsi se o tento faktor
     private float scaleDown = 0.5f;            // pokud se zmensuje zmensi se na tento faktor
-    private int startSize = 5;                 // velikost mapy pri vytvoreni
-    private int minSize = 5;                   // pokud by se pri zmenseni mela mapa zmensit pod tuto velikost tak se nezmensi
+    private int startSize = 10;                 // velikost mapy pri vytvoreni
+    private int minSize = 10;                   // pokud by se pri zmenseni mela mapa zmensit pod tuto velikost tak se nezmensi
     
 
+    /**
+    vrátí počet prvků v mapě O(1)
+    */
     public HashMapa(float maxLoadFactor, float minLoadFactor, float scaleUp, int startSize) {   // kontruktor s parametry
         this.maxLoadFactor = maxLoadFactor;
         this.minLoadFactor = minLoadFactor;
@@ -32,11 +35,17 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
             prvky.add(new LinearniSeznam<>());
         }
     }
+    /**
+    vrátí počet prvků v mapě O(1)
+    @return vrátí počet prvků v mapě
+    */
     public int GetPocetPrvku() {
         return pocetPrvku;
     }
-
-    public void Vlozit(V data, K key) {                               // vlozeni dalsiho prvku s klicem     O(1) 
+    /**
+    Vytvoří z daných dat nový prvek a vloží ho do mapy na pozici podle daného klíče O(1)
+    */
+    public void Vlozit(V data, K key) {                                 
         int index = Math.abs(key.hashCode() % prvky.size());           
 
         if (prvky.get(index) == null) {
@@ -49,9 +58,12 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
             prvky = NastaveniVelikostiMapy(prvky, scaleUp);
         }
     }
-    
-    public V Najit(K key) {                                          // vrati data prvku ktery ma stejny klic jako zadany pokud je takovy v mape   O(1) ... O(n)
-        int index = Math.abs(key.hashCode() % prvky.size());                   // pokud nenajde vrati null
+    /**
+    Najde a vrátí první hodnotu v mapě podle daného klíče O(1) ... O(n)
+    @return vrátí první hodnotu v mapě podle daného klíče pokud v mapě takový není vrátí null
+    */
+    public V Najit(K key) {                                             
+        int index = Math.abs(key.hashCode() % prvky.size());                   
 
         if (prvky.get(index) != null) {
             List<Prvek> listPrvky = prvky.get(index).ToList();
@@ -63,7 +75,10 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
         }
         return null;
     }
-    public void Smazat(K key) {                                    // smazani prvku podle klice         O(1) ... O(n)
+    /**
+    Smaže z mapy první prvek který má daný klíč. Změnší mapy pokud po smazání je load factor pod danou hodnotou O(1) ... O(n)
+    */
+    public void Smazat(K key) {                                          
         int index = Math.abs(key.hashCode() % prvky.size());
 
         if (prvky.get(index) != null) {
@@ -83,7 +98,11 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
             }
         }
     } 
-    public List<LinearniSeznam<Prvek>> NastaveniVelikostiMapy(List<LinearniSeznam<Prvek>> prvkyPuvodni, float scale) {       // zmeneni velikosti mapy      O(n)
+    /**
+    vrátí zvětšenou mapu s velikostí podle daného faktoru O(n)
+    @return vrátí zvětšenou mapu s velikostí podle daného faktoru
+    */
+    private List<LinearniSeznam<Prvek>> NastaveniVelikostiMapy(List<LinearniSeznam<Prvek>> prvkyPuvodni, float scale) {       
         int length = prvkyPuvodni.size();
         int Newlength = Math.round(length * scale);
         List<LinearniSeznam<Prvek>> zvetsenePrvky = new ArrayList<>(Newlength);
@@ -101,9 +120,11 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
         }
         return zvetsenePrvky;
     } 
-
-    public void Vypsat() {                                      // vypsani vsech prvku v mape         O(n)
-        for (LinearniSeznam<Prvek> seznam : prvky) {            // vypise prazdny radek pokud v danem seznamu neni zadny prvek
+    /**
+    Vypíše hodnoty všech prvků. Vypíše prázdný řádek pokud v daném seznamu není žádný prvek O(n)
+    */
+    public void Vypsat() {                                      
+        for (LinearniSeznam<Prvek> seznam : prvky) {            // 
             if (seznam != null) {
                 System.out.printf("\n");
                 List<Prvek> list = seznam.ToList();
@@ -113,8 +134,10 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
             }
         }
     }
-
-    private class Prvek {                                       // prvek mapy
+    /**
+    Prvek mapy s daným klíčem a hodnotou
+    */
+    private class Prvek {                                       
         V data;
         K key;
         public Prvek(V data, K key) {
