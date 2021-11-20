@@ -9,9 +9,16 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
     private float minLoadFactor = 0.2f;        // pokud je mensi mapa se zmensi
     private float scaleUp = 2;                 // pokud se zvetsuje mapa zvetsi se o tento faktor
     private float scaleDown = 0.5f;            // pokud se zmensuje zmensi se na tento faktor
-    private int startSize = 10;                 // velikost mapy pri vytvoreni
-    private int minSize = 10;                   // pokud by se pri zmenseni mela mapa zmensit pod tuto velikost tak se nezmensi
+    private int startSize = 10;                // velikost mapy pri vytvoreni
+    private int minSize = 10;                  // pokud by se pri zmenseni mela mapa zmensit pod tuto velikost tak se nezmensi
     
+    /**
+    Výchozí hodnoty - 1,  0.2,  2,  10
+    @param maxLoadFactor pokud je load factor vetsi mapa se zvetsi | load factor -> velikostMapy / pocetPrvku 
+    @param minLoadFactor pokud je mensi mapa se zmensi
+    @param scaleUp pokud se zvetsuje mapa zvetsi se o tento faktor
+    @param startSize velikost mapy pri vytvoreni
+    */
     public HashMapa(float maxLoadFactor, float minLoadFactor, float scaleUp, int startSize) {   // kontruktor s parametry
         this.maxLoadFactor = maxLoadFactor;
         this.minLoadFactor = minLoadFactor;
@@ -25,6 +32,7 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
             prvky.add(new LinearniSeznam<>());
         }
     }
+
     public HashMapa() {                               // konstruktor bez parametru 
         prvky = new ArrayList<>(startSize);
         for (int i = 0; i < startSize; i++) {     // vytvoreni prazdne mapy se startovni velikosti
@@ -41,7 +49,7 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
     /**
     Vytvoří z daných dat nový prvek a vloží ho do mapy na pozici podle daného klíče O(1) ... O(n)
     */
-    public void Vlozit(V data, K key) {                                 
+    public HashMapa<V, K> Vlozit(V data, K key) {                                 
         int index = Math.abs(key.hashCode() % prvky.size());           
 
         prvky.get(index).vlozPosledni(new Prvek(data, key));
@@ -50,6 +58,7 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
         if (pocetPrvku / prvky.size() >= maxLoadFactor) {            // zvetseni mapy pokud je potreba
             prvky = NastaveniVelikostiMapy(prvky, scaleUp);
         }
+        return this;
     }
     /**
     Najde a vrátí první hodnotu v mapě podle daného klíče O(1) ... O(n)
@@ -68,6 +77,7 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
     }
     /**
     Smaže z mapy první prvek který má daný klíč. Změnší mapy pokud po smazání je load factor pod danou hodnotou O(1) ... O(n)
+    @return vrátí true pokud byl prvek smazán, false pokud prvek s takovým klíčem neexistuje
     */
     public boolean Smazat(K key) {                                          
         int index = Math.abs(key.hashCode() % prvky.size());
