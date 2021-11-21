@@ -84,18 +84,19 @@ public class Graf<E> {
     @return 
     */
     public void VypsatVsechnyPropojeni() {
-        List<List<LinearniSeznam<E>>> list = propojeni.ToList();
+        List<LinearniSeznam<E>> list = propojeni.ToList();
 
-        for (List<LinearniSeznam<E>> list2 : list) {
-            for (LinearniSeznam<E> prop : list2) {
-                List<E> listE = prop.ToList();
-                System.out.printf("\n" + listE.get(0) + " - "); 
-                for (int i = 0; i < listE.size(); i++) {
-                    if (i != 0) {
-                        System.out.printf(listE.get(i) + ", "); 
-                    }
+        for (LinearniSeznam<E> list2 : list) {
+            List<E> listE = list2.ToList();
+            System.out.printf("\n" + listE.get(0) + " - "); 
+            for (int i = 0; i < listE.size(); i++) {
+                if (i != 0) {
+                    if (i != 1)
+                        System.out.printf(", "); 
+                    System.out.printf(listE.get(i) + ""); 
                 }
             }
         }
+        System.out.printf("\n"); 
     }
 }

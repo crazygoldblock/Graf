@@ -135,14 +135,12 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
     /**
     Prvek mapy s daným klíčem a hodnotou
     */
-    public List<List<V>> ToList() {
-        List<List<V>> list = new ArrayList<>();
+    public List<V> ToList() {
+        List<V> list = new ArrayList<>();
         for (LinearniSeznam<Prvek> seznam : prvky) {
-            List<V> listek = new ArrayList<>();
             for (Prvek prvek : seznam.ToList()) {
-                listek.add(prvek.data);
+                list.add(prvek.data);
             }
-            list.add(listek);
         }
         return list;
     }
