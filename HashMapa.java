@@ -19,7 +19,7 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
     @param scaleUp pokud se zvetsuje mapa zvetsi se o tento faktor
     @param startSize velikost mapy pri vytvoreni
     */
-    public HashMapa(float maxLoadFactor, float minLoadFactor, float scaleUp, int startSize) {   // kontruktor s parametry
+    public HashMapa(float maxLoadFactor, float minLoadFactor, float scaleUp, int startSize) {   
         this.maxLoadFactor = maxLoadFactor;
         this.minLoadFactor = minLoadFactor;
         this.scaleUp = scaleUp;
@@ -33,7 +33,7 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
         }
     }
 
-    public HashMapa() {                               // konstruktor bez parametru 
+    public HashMapa() {                              
         prvky = new ArrayList<>(startSize);
         for (int i = 0; i < startSize; i++) {     // vytvoreni prazdne mapy se startovni velikosti
             prvky.add(new LinearniSeznam<>());
@@ -131,6 +131,20 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
                 }
             }
         }
+    }
+    /**
+    Prvek mapy s daným klíčem a hodnotou
+    */
+    public List<List<V>> ToList() {
+        List<List<V>> list = new ArrayList<>();
+        for (LinearniSeznam<Prvek> seznam : prvky) {
+            List<V> listek = new ArrayList<>();
+            for (Prvek prvek : seznam.ToList()) {
+                listek.add(prvek.data);
+            }
+            list.add(listek);
+        }
+        return list;
     }
     /**
     Prvek mapy s daným klíčem a hodnotou

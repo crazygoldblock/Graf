@@ -29,11 +29,13 @@ public class App {
         graf.PridatPropojeni("pavel", "david");
         graf.PridatPropojeni("pavel", "mirek");        // vytvoření spojení prvků (edges)
 
-        System.out.printf("----------------------------\n");
-        VypsatPropojeni(graf.GetPropojeniPrvku("ondra"));
-        VypsatPropojeni(graf.GetPropojeniPrvku("kuba"));
-        VypsatPropojeni(graf.GetPropojeniPrvku("david"));         // vypsání propojení určitých prvků
-        System.out.printf("----------------------------\n");
+        //System.out.printf("----------------------------\n");
+        //VypsatPropojeni(graf.GetPropojeniPrvku("ondra"));
+        //VypsatPropojeni(graf.GetPropojeniPrvku("kuba"));
+        //VypsatPropojeni(graf.GetPropojeniPrvku("david"));         // vypsání propojení určitých prvků
+        //System.out.printf("----------------------------\n");
+
+        graf.VypsatVsechnyPropojeni();
 
         graf.OdebratPropojeni("ondra", "vojta");
         graf.OdebratPropojeni("david", "pavel");
@@ -41,10 +43,10 @@ public class App {
 
         graf.SmazatPrvek("michal");                          // odebrání prvku odebere také všechny jeho propojení v ostatních prvcích
 
-        VypsatPropojeni(graf.GetPropojeniPrvku("ondra"));
-        VypsatPropojeni(graf.GetPropojeniPrvku("kuba"));
-        VypsatPropojeni(graf.GetPropojeniPrvku("david"));    // vypsání propojení určitých prvků
-        System.out.printf("----------------------------\n");
+        //VypsatPropojeni(graf.GetPropojeniPrvku("ondra"));
+        //VypsatPropojeni(graf.GetPropojeniPrvku("kuba"));
+        //VypsatPropojeni(graf.GetPropojeniPrvku("david"));    // vypsání propojení určitých prvků
+        //System.out.printf("----------------------------\n");
 
     }
     public static void VypsatPropojeni(List<String> list) {   // metoda pro vypsání listu

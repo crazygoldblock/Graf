@@ -7,7 +7,9 @@ public class Graf<E> {
     @return vrátí celý tento graf
     */
     public Graf<E> VLozitPrvek(E prvek) {
-        propojeni.Vlozit(new LinearniSeznam<>(), prvek);
+        LinearniSeznam<E> seznam = new LinearniSeznam<>();
+        seznam.vlozPrvni(prvek);
+        propojeni.Vlozit(seznam, prvek);
         return this;
     }
     /**
@@ -76,5 +78,24 @@ public class Graf<E> {
         if (seznam == null)
             throw new NullPointerException();    
         return seznam.ToList();
+    }
+    /**
+        O(n)
+    @return 
+    */
+    public void VypsatVsechnyPropojeni() {
+        List<List<LinearniSeznam<E>>> list = propojeni.ToList();
+
+        for (List<LinearniSeznam<E>> list2 : list) {
+            for (LinearniSeznam<E> prop : list2) {
+                List<E> listE = prop.ToList();
+                System.out.printf("\n" + listE.get(0) + " - "); 
+                for (int i = 0; i < listE.size(); i++) {
+                    if (i != 0) {
+                        System.out.printf(listE.get(i) + ", "); 
+                    }
+                }
+            }
+        }
     }
 }
