@@ -84,6 +84,16 @@ public class LinearniSeznam<E> {
         return VymazatCheck(prvek);
     }
     /**
+    Zjistí jestli je prvek s danými daty s seznamu  O(n)
+    @return vrátí false pokud není, true pokud je
+    */
+    public boolean JePrvekVSeznamu(E data) {
+        if (NajitPrvek(data) == null)
+            return false;
+        else
+            return true;
+    }
+    /**
     vrátí data prvku na daném indexu v seznamu  O(n)
     @return  vrátí data na daném prvku nebo null pokud tento index neexistuje
     */

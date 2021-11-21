@@ -11,10 +11,15 @@ public class Graf<E> {
         return this;
     }
     /**
-    Smaže daný prvek z grafu O(1) ... O(n)
+    Smaže daný prvek z grafu a prpojení v ostatních prvcích O(1) ... O(n)
     @return vrátí true pokud byl prvek smazán, false pokud tento prvek v graf neexistuje
     */
     public boolean SmazatPrvek(E prvek) {
+        List<E> seznam = propojeni.Najit(prvek).ToList();
+
+        for (E prveklistu : seznam) {
+            OdebratPropojeni(prvek, prveklistu);
+        }
         return propojeni.Smazat(prvek);
     }
     /**
@@ -29,6 +34,11 @@ public class Graf<E> {
         LinearniSeznam<E> seznam2 = propojeni.Najit(prvek2);
 
         if (seznam1 == null || seznam2 == null) 
+            return false;
+
+        if (seznam1.JePrvekVSeznamu(prvek2)) 
+            return false;
+        if (seznam2.JePrvekVSeznamu(prvek1)) 
             return false;
         
         seznam1.vlozPosledni(prvek2);
@@ -49,8 +59,10 @@ public class Graf<E> {
         if (seznam1 == null || seznam2 == null) 
             return false;
         
-        seznam1.VymazatPrvekData(prvek2);
-        seznam2.VymazatPrvekData(prvek1);
+        if (seznam1.VymazatPrvekData(prvek2) == null)
+            return false;
+        if (seznam2.VymazatPrvekData(prvek1) == null)
+            return false;
         return true;
     }
     /**
@@ -62,8 +74,7 @@ public class Graf<E> {
             throw new NullPointerException();
         LinearniSeznam<E> seznam = propojeni.Najit(prvek);
         if (seznam == null)
-        throw new NullPointerException();
-                
+            throw new NullPointerException();    
         return seznam.ToList();
     }
 }
