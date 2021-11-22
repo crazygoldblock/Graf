@@ -80,8 +80,7 @@ public class Graf<E> {
         return seznam.ToList();
     }
     /**
-        O(n)
-    @return 
+    Vypíše všechny prvky v grafu a jejich propojení O(n) 
     */
     public void VypsatVsechnyPropojeni() {
         List<LinearniSeznam<E>> list = propojeni.ToList();

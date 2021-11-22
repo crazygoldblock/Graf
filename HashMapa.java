@@ -133,7 +133,8 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
         }
     }
     /**
-    Prvek mapy s daným klíčem a hodnotou
+    vrátí list se všemi prvky O(n)
+    @return vrátí list se všemi prvky
     */
     public List<V> ToList() {
         List<V> list = new ArrayList<>();
