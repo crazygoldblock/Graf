@@ -10,10 +10,9 @@ public class Graf<E, P> {
             this.spoj = spoj;
         }
         @Override @SuppressWarnings("unchecked")
-        public boolean equals(Object obj) {
+        public boolean equals(Object obj) {         // porovnání jen podle prvku a ne spoje
             if (obj.getClass() == getClass()) {
                 Spoj spoj =  (Spoj)obj;
-
                 if (spoj.prvek.equals(prvek))
                     return true;
                 return false;
@@ -21,8 +20,7 @@ public class Graf<E, P> {
             return false;
         }
     }
-    HashMapa<LinearniSeznam<Spoj>, E> propojeni = new HashMapa<>();  // V, K
-    //HashMapa<LinearniSeznam<Spoj>, E> spoje = new HashMapa<>();  // V, K
+    HashMapa<LinearniSeznam<Spoj>, E> propojeni = new HashMapa<>();  // hlavní mapa ve které jsou uložené všechny prvky
     /**
     Vloží nový prvek do grafu O(1) ... O(n)
     @return vrátí celý tento graf
@@ -126,6 +124,10 @@ public class Graf<E, P> {
         }
         System.out.printf("\n"); 
     }
+    /**
+    Najde a vrátí classu ve spoji mezi dvěmi zadanými prvky O(n)
+    @return vrátí classu ve spoji mezi dvěmi zadanými prvky
+    */
     public P GetSpoj(E prvek1, E prvek2) {
         LinearniSeznam<Spoj> spoje = propojeni.Najit(prvek1);
         List<Spoj> propojeni = spoje.ToList();

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class App {  
-    static Graf<String, Spoj<String>> graf = new Graf<>();
+    static Graf<String, Spoj<String>> graf = new Graf<>();   // hlavní graf
     public static void main(String[] args) { 
         
 
@@ -29,7 +29,7 @@ public class App {
 
 
 
-        double prevod1 = PrevodJednotek(6, "cm", "km");      // převod 2cm na km
+        double prevod1 = PrevodJednotek(6, "cm", "km");      // převod 6 cm na km
         double prevod2 = PrevodJednotek(5, "km", "cm");
         double prevod3 = PrevodJednotek(4, "m", "cm");
         double prevod4 = PrevodJednotek(3, "dm", "m");
@@ -43,12 +43,17 @@ public class App {
                           "5. Převod: " + prevod5);
 
     }
-
-
+    /** 
+    Vypočítá převod ze zadané jednotky na druhou zadanou jednotku O(n)
+    @return vrátí výsledek převodu
+    */
     public static double PrevodJednotek(float hodnota, String puvodniJednotka, String jednotkaNaPrevedeni) {
         return hodnota * PrevodJednotekRecursive(1d, puvodniJednotka, jednotkaNaPrevedeni, new ArrayList<String>());
     }
-
+    /** 
+    Rekursivní procházení prvkami v grafu a výpočet převodu 
+    @return vrátí poměr mezi první danou jednotkou a druhou
+    */
     public static double PrevodJednotekRecursive(Double hodnota, String aktualniJednotka, String jednotkaNaPrevedeni, List<String> navstivene) {
         if (jednotkaNaPrevedeni.equals(aktualniJednotka)) {
             return hodnota;
@@ -66,9 +71,9 @@ public class App {
             if (spojString.getSmer().equals(spoj)) 
                 nasobek *= spojString.getVaha();
             else 
-                nasobek = nasobek * (1d / spojString.getVaha());
+                nasobek *= (1d / spojString.getVaha());
             double doubl = PrevodJednotekRecursive(nasobek, spoj, jednotkaNaPrevedeni, navstivenePrvky);
-            if (doubl != 0) 
+            if (doubl != 0d) 
                 return doubl;
         }
         return 0d;
