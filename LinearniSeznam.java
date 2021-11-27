@@ -290,7 +290,7 @@ public class LinearniSeznam<E> {
     private PrvekSeznamu NajitPrvek(E data) {
         PrvekSeznamu prvek = prvni; 
         while (prvek != null) {
-            if (prvek.data == data)
+            if (prvek.data.equals(data))
                 return prvek;
             prvek = prvek.nasledujici;
         }

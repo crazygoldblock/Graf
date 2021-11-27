@@ -1,14 +1,35 @@
+import java.util.ArrayList;
 import java.util.List;
 
-public class Graf<E> {
-    HashMapa<LinearniSeznam<E>, E> propojeni = new HashMapa<>();  // V, K
+public class Graf<E, P> {
+    private class Spoj {
+        E prvek;
+        P spoj;
+        public Spoj(E prvek, P spoj) {
+            this.prvek = prvek; 
+            this.spoj = spoj;
+        }
+        @Override @SuppressWarnings("unchecked")
+        public boolean equals(Object obj) {
+            if (obj.getClass() == getClass()) {
+                Spoj spoj =  (Spoj)obj;
+
+                if (spoj.prvek.equals(prvek))
+                    return true;
+                return false;
+            }
+            return false;
+        }
+    }
+    HashMapa<LinearniSeznam<Spoj>, E> propojeni = new HashMapa<>();  // V, K
+    //HashMapa<LinearniSeznam<Spoj>, E> spoje = new HashMapa<>();  // V, K
     /**
     Vloží nový prvek do grafu O(1) ... O(n)
     @return vrátí celý tento graf
     */
-    public Graf<E> VLozitPrvek(E prvek) {
-        LinearniSeznam<E> seznam = new LinearniSeznam<>();
-        seznam.vlozPrvni(prvek);
+    public Graf<E, P> VLozitPrvek(E prvek) {
+        LinearniSeznam<Spoj> seznam = new LinearniSeznam<>();
+        seznam.vlozPrvni(new Spoj(prvek, null));
         propojeni.Vlozit(seznam, prvek);
         return this;
     }
@@ -17,10 +38,10 @@ public class Graf<E> {
     @return vrátí true pokud byl prvek smazán, false pokud tento prvek v graf neexistuje
     */
     public boolean SmazatPrvek(E prvek) {
-        List<E> seznam = propojeni.Najit(prvek).ToList();
+        List<Spoj> seznam = propojeni.Najit(prvek).ToList();
 
-        for (E prveklistu : seznam) {
-            OdebratPropojeni(prvek, prveklistu);
+        for (Spoj spoj : seznam) {
+            OdebratPropojeni(prvek, spoj.prvek);
         }
         return propojeni.Smazat(prvek);
     }
@@ -28,23 +49,23 @@ public class Graf<E> {
     Přidá prpojení mezi dvěma prvkama O(1) ... O(n)
     @return vrátí true pokud propojení bylo přidáno, false pokud nebylo přidáno kvůli tomu že jeden z prvků nebyl v grafu
     */
-    public boolean PridatPropojeni(E prvek1, E prvek2) {
-        if (prvek1 == null ||prvek2 == null)
+    public boolean PridatPropojeni(E prvek1, E prvek2, P spoj) {
+        if (prvek1 == null ||prvek2 == null ||spoj == null)
             throw new NullPointerException();
 
-        LinearniSeznam<E> seznam1 = propojeni.Najit(prvek1);
-        LinearniSeznam<E> seznam2 = propojeni.Najit(prvek2);
+        LinearniSeznam<Spoj> seznam1 = propojeni.Najit(prvek1);
+        LinearniSeznam<Spoj> seznam2 = propojeni.Najit(prvek2);
 
         if (seznam1 == null || seznam2 == null) 
             return false;
 
-        if (seznam1.JePrvekVSeznamu(prvek2)) 
+        if (seznam1.JePrvekVSeznamu(new Spoj(prvek2, null))) 
             return false;
-        if (seznam2.JePrvekVSeznamu(prvek1)) 
+        if (seznam2.JePrvekVSeznamu(new Spoj(prvek1, null))) 
             return false;
         
-        seznam1.vlozPosledni(prvek2);
-        seznam2.vlozPosledni(prvek1);
+        seznam1.vlozPosledni(new Spoj(prvek2, spoj));
+        seznam2.vlozPosledni(new Spoj(prvek1, spoj));
         return true;
     }
     /**
@@ -55,15 +76,15 @@ public class Graf<E> {
         if (prvek1 == null || prvek2 == null) 
             throw new NullPointerException();
 
-        LinearniSeznam<E> seznam1 = propojeni.Najit(prvek1);
-        LinearniSeznam<E> seznam2 = propojeni.Najit(prvek2);
+        LinearniSeznam<Spoj> seznam1 = propojeni.Najit(prvek1);
+        LinearniSeznam<Spoj> seznam2 = propojeni.Najit(prvek2);
 
         if (seznam1 == null || seznam2 == null) 
             return false;
         
-        if (seznam1.VymazatPrvekData(prvek2) == null)
+        if (seznam1.VymazatPrvekData(new Spoj(prvek2, null)) == null)
             return false;
-        if (seznam2.VymazatPrvekData(prvek1) == null)
+        if (seznam2.VymazatPrvekData(new Spoj(prvek1, null)) == null)
             return false;
         return true;
     }
@@ -74,28 +95,44 @@ public class Graf<E> {
     public List<E> GetPropojeniPrvku(E prvek) {
         if (prvek == null)
             throw new NullPointerException();
-        LinearniSeznam<E> seznam = propojeni.Najit(prvek);
+        LinearniSeznam<Spoj> seznam = propojeni.Najit(prvek);
         if (seznam == null)
             throw new NullPointerException();    
-        return seznam.ToList();
+        List<Spoj> spoje = seznam.ToList();
+        List<E> prvky = new ArrayList<>();
+        for (int i = 0; i < spoje.size(); i++) {
+            if (i != 0) {
+                prvky.add(spoje.get(i).prvek);
+            }
+        }
+        return prvky;
     }
     /**
     Vypíše všechny prvky v grafu a jejich propojení O(n) 
     */
     public void VypsatVsechnyPropojeni() {
-        List<LinearniSeznam<E>> list = propojeni.ToList();
+        List<LinearniSeznam<Spoj>> list = propojeni.ToList();
 
-        for (LinearniSeznam<E> list2 : list) {
-            List<E> listE = list2.ToList();
-            System.out.printf("\n" + listE.get(0) + " - "); 
+        for (LinearniSeznam<Spoj> list2 : list) {
+            List<Spoj> listE = list2.ToList();
+            System.out.printf("\n" + listE.get(0).prvek + " - "); 
             for (int i = 0; i < listE.size(); i++) {
                 if (i != 0) {
                     if (i != 1)
                         System.out.printf(", "); 
-                    System.out.printf(listE.get(i) + ""); 
+                    System.out.printf(listE.get(i).prvek + ""); 
                 }
             }
         }
         System.out.printf("\n"); 
+    }
+    public P GetSpoj(E prvek1, E prvek2) {
+        LinearniSeznam<Spoj> spoje = propojeni.Najit(prvek1);
+        List<Spoj> propojeni = spoje.ToList();
+        for (Spoj spoj : propojeni) {
+            if (spoj.prvek.equals(prvek2))
+                return spoj.spoj;
+        }
+        return null;
     }
 }

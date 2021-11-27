@@ -76,7 +76,7 @@ public class HashMapa<V, K> {                            // pokud jsou v mape dv
         return null;
     }
     /**
-    Smaže z mapy první prvek který má daný klíč. Změnší mapy pokud po smazání je load factor pod danou hodnotou O(1) ... O(n)
+    Smaže z mapy první prvek který má daný klíč. Změnší mapu pokud po smazání je load factor pod danou hodnotou O(1) ... O(n)
     @return vrátí true pokud byl prvek smazán, false pokud prvek s takovým klíčem neexistuje
     */
     public boolean Smazat(K key) {                                          
