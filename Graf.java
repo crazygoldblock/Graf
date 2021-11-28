@@ -15,7 +15,6 @@ public class Graf<E, P> {
                 Spoj spoj =  (Spoj)obj;
                 if (spoj.prvek.equals(prvek))
                     return true;
-                return false;
             }
             return false;
         }
