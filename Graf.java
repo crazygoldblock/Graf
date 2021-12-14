@@ -37,8 +37,10 @@ public class Graf<E, P> {
     public boolean SmazatPrvek(E prvek) {
         List<Spoj> seznam = propojeni.Najit(prvek).ToList();
 
-        for (Spoj spoj : seznam) {
-            OdebratPropojeni(prvek, spoj.prvek);
+        if (seznam != null) {
+            for (Spoj spoj : seznam) {
+                OdebratPropojeni(prvek, spoj.prvek);
+            }
         }
         return propojeni.Smazat(prvek);
     }

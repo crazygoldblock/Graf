@@ -22,7 +22,7 @@ public class App {
         double prevod7 = PrevodJednotek(3, "s", "ms");
         double prevod8 = PrevodJednotek(4, "s", "ns");
 
-        double prevod9 = PrevodJednotek(5, "g", "ng");      // převod 5 ps na ns
+        double prevod9 = PrevodJednotek(5, "g", "ng");      // převod 5 g na ng
         double prevod10 = PrevodJednotek(6, "t", "kg");
         double prevod11 = PrevodJednotek(7, "dkg", "g");
 
